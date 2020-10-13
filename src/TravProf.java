@@ -1,14 +1,19 @@
 public class TravProf extends MedCond{
     /** variables **/
-    String travAgentID;
-    String firstName;
-    String lastName;
-    String address;
-    String phone;
-    float tripCost;
-    String travelType;
-    String paymentType;
-    MedCond medCondInfo;
+    private String travAgentID;
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String phone;
+    private float tripCost;
+    private String travelType;
+    private String paymentType;
+    private MedCond medCondInfo;
+
+    /** constructor **/
+    public TravProf(String agentID){
+        travAgentID = agentID;
+    }
 
     /** getter methods **/
     public String getTravAgentID(){
@@ -38,6 +43,7 @@ public class TravProf extends MedCond{
     public MedCond getMedCondInfo(){
         return medCondInfo;
     }
+
     /** update methods **/
     private void updateFirstName(String name){
         firstName = name;
@@ -55,13 +61,18 @@ public class TravProf extends MedCond{
         tripCost = cost;
     }
     private void updateTravelType(String type){
-        travelType = type;
+        if(type == "Pleasure" || type == "Business") {
+            travelType = type;
+        }
     }
     private void updatePaymentType(String type){
-        paymentType = type;
+        if(type == "Credit" || type == "Check" || type == "Debit" || type == "Invoice"){
+            paymentType = type;
+        }
+
     }
     private void updateMedCondInfo(MedCond info){
-        // somehow update the info here..idk how yet
+        MedCond conditions = new MedCond();
+
     }
-    // test commit!
 }

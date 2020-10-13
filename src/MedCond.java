@@ -27,10 +27,16 @@ public class MedCond {
         mdPhone = phone;
     }
     private void updateAlgType(String type){
-        algType = type;
+        if(type == "none" || type == "food" || type == "medication" || type == "other") {
+            algType = type;
+        }
     }
     private void updateIllType(String type){
-        illType = type;
+        if(type == "none" || type == "heart" || type == "diabetes" || type == "asthma" || type == "other"){
+            illType = type;
+        }
     }
+
+
 }
 
