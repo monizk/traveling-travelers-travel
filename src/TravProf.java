@@ -45,33 +45,33 @@ public class TravProf extends MedCond{
     }
 
     /** update methods **/
-    private void updateFirstName(String name){
+    public void updateFirstName(String name){
         firstName = name;
     }
-    private void updateLastName(String name){
+    public void updateLastName(String name){
         lastName = name;
     }
-    private void updateAddress(String add){
+    public void updateAddress(String add){
         address = add;
     }
-    private void updatePhone(String num){
+    public void updatePhone(String num){
         phone = num;
     }
-    private void updateTripCost(float cost){
+    public void updateTripCost(float cost){
         tripCost = cost;
     }
-    private void updateTravelType(String type){
+    public void updateTravelType(String type){
         if(type == "Pleasure" || type == "Business") {
             travelType = type;
         }
     }
-    private void updatePaymentType(String type){
+    public void updatePaymentType(String type){
         if(type == "Credit" || type == "Check" || type == "Debit" || type == "Invoice"){
             paymentType = type;
         }
 
     }
-    private void updateMedCondInfo(MedCond info){
+    public void updateMedCondInfo(MedCond info){
         MedCond conditions = new MedCond();
 
     }
