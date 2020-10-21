@@ -1,8 +1,7 @@
 import java.util.ArrayList;
-import java.util.Map;
 
 public class TravProfDB {
-    Map<String, String> travelerList = (Map<String, String>) new ArrayList();
+    ArrayList travelerList =  new ArrayList();
     int currentTravelerIndex = 0;
     int numTravelers = 0;
     String filename;
@@ -12,15 +11,22 @@ public class TravProfDB {
 
     }
 
+
     public void insertNewProfile(TravProf input){
-        travelerList.put(input.getTravAgentID(), input.getLastName());
+        travelerList.add(input);
+
         currentTravelerIndex++;
         numTravelers = travelerList.size();
     }
 
-    /** public TravProf findProfile(String agent, String last){
-        // returns the traveler profile when given the agent and last name
-    } **/
+    public TravProf findProfile(String agent, String last){
+        // this can definitely be done better..but this was my quick solution..we should optimize this later
+        for(int i = 0; i < numTravelers; i++){
+            if(travelerList.
+
+            }
+        }
+    }
 
     public boolean deleteProfile(String agent, String last){
         /** if (travelerList.containsKey(agent,last)){
