@@ -77,10 +77,8 @@ public class TravProf {
         if(type.equals("Credit") || type.equals("Check") || type.equals("Debit") || type.equals("Invoice")){
             paymentType = type;
         }
-
     }
     public void updateMedCondInfo(MedCond info){
         medCondInfo = info;
-
     }
 }

@@ -4,6 +4,7 @@ public class MedCond {
     String mdPhone;
     String algType;
     String illType;
+
     /** constructor **/
     public MedCond (String contact, String phone, String alergyType, String illnessType) {
         mdContact = contact;
@@ -11,6 +12,7 @@ public class MedCond {
         algType = alergyType;
         illType = illnessType;
     }
+
     /** getter methods **/
     public String getMdContact(){
         return mdContact;
@@ -24,6 +26,7 @@ public class MedCond {
     public String getIllType(){
         return illType;
     }
+
     /** update methods **/
     private void updateMdContact(String contact){
         mdContact = contact;

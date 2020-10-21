@@ -11,7 +11,6 @@ public class TravProfDB {
 
     }
 
-
     public void insertNewProfile(TravProf input){
         travelerList.add(input);
 
