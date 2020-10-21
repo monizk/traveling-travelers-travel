@@ -5,6 +5,14 @@ public class MedCond {
     String algType;
     String illType;
 
+    /** constructor **/
+    public MedCond (String contact, String phone, String alergyType, String illnessType) {
+        mdContact = contact;
+        mdPhone = phone;
+        algType = alergyType;
+        illType = illnessType;
+    }
+
     /** getter methods **/
     public String getMdContact(){
         return mdContact;
@@ -27,16 +35,15 @@ public class MedCond {
         mdPhone = phone;
     }
     private void updateAlgType(String type){
-        if(type == "none" || type == "food" || type == "medication" || type == "other") {
+        if(type.equals("none") || type.equals("food") || type.equals("medication") || type.equals("other")) {
             algType = type;
         }
     }
     private void updateIllType(String type){
-        if(type == "none" || type == "heart" || type == "diabetes" || type == "asthma" || type == "other"){
+        if(type.equals("none") || type.equals("heart") || type.equals("diabetes") || type.equals("asthma") || type.equals("other")){
             illType = type;
         }
     }
 
 
 }
-
