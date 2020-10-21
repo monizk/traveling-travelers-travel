@@ -1,14 +1,17 @@
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class TravProfDB {
-    ArrayList travelerList =  new ArrayList();
-    int currentTravelerIndex = 0;
+
     int numTravelers = 0;
-    String filename;
+    int currentTravelerIndex = 0;
+    String fileName;
+    ArrayList<TravProf> travelerList =  new ArrayList<TravProf>();
 
     /** constructor **/
-    public static void TravProfDB(String file){
-
+    public TravProfDB(String file){
+        fileName = file;
     }
 
     public void insertNewProfile(TravProf input){
@@ -18,30 +21,63 @@ public class TravProfDB {
         numTravelers = travelerList.size();
     }
 
-    public TravProf findProfile(String agent, String last){
-        // this can definitely be done better..but this was my quick solution..we should optimize this later
-        for(int i = 0; i < numTravelers; i++){
-            if(travelerList.
+    public boolean deleteProfile(String agent, String last){
+        for(int i = 0; i < travelerList.size(); i++) {
+            if(travelerList.get(i).getLastName().equals(last) && travelerList.get(i).getTravAgentID().equals(agent)) {
+                travelerList.remove(i);
 
+                currentTravelerIndex--;
+                numTravelers = travelerList.size();
+
+                return true;
             }
+        }
+        return false;
+    }
+
+    public TravProf findProfile(String agent, String last){
+     // returns the traveler profile when given the agent and last name
+        for(int i = 0; i < travelerList.size(); i++) {
+            if(travelerList.get(i).getLastName().equals(last) && travelerList.get(i).getTravAgentID().equals(agent)) {
+                return travelerList.get(i);
+            }
+        }
+        return null;
+     }
+
+    public TravProf findFirstProfile() {
+        return travelerList.get(0);
+    }
+
+    /** NOT SURE ABOUT THIS ONE **/
+    public TravProf findNextProfile() {
+        return travelerList.get(currentTravelerIndex + 1);
+    }
+
+    /** I HAVE A DISAGREEMENT WITH THE NEXT TWO METHODS AND THE PROJECT SHEET **/
+    public void writeAllTravlProf(String file){
+        // writes all the TravProf stored in the travelerList array to a file
+       // try {
+       //     File myObj = new File(file);
+       //     myObj.createNewFile();
+       // } catch (IOException e) {
+       //     System.out.println("An error occurred.");
+       //     e.printStackTrace();
+       // }
+        try {
+            FileOutputStream Output = new FileOutputStream(file);
+            ObjectOutputStream objectPrint = new ObjectOutputStream(Output);
+            for(int i = 0; i < travelerList.size(); i++) {
+                objectPrint.writeObject(travelerList.get(i));
+            }
+            objectPrint.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
 
-    public boolean deleteProfile(String agent, String last){
-        /** if (travelerList.containsKey(agent,last)){
-            return false;
-        } else {
-            travelerList.remove(agent, last);
-            return true;
-        } **/
-    return true;
-    }
-
-    public void writeAllTravlProf(){
-        // writes all the TravProf stored in the travelerList array to a file
-    }
-
-    public void initializeDatabase(){
+    public void initializeDatabase(String file){
         // read the existing traveler profiles placed in the file?
     }
 }
