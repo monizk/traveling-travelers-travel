@@ -1,4 +1,4 @@
-public class TravProf extends MedCond{
+public class TravProf {
     /** variables **/
     private String travAgentID;
     private String firstName;
@@ -11,8 +11,16 @@ public class TravProf extends MedCond{
     private MedCond medCondInfo;
 
     /** constructor **/
-    public TravProf(String agentID){
+    public TravProf(String agentID, String fName, String lName, String addy, String fone, float tCost, String travType, String payType, MedCond mc) {
         travAgentID = agentID;
+        firstName = fName;
+        lastName = lName;
+        address = addy;
+        phone = fone;
+        tripCost = tCost;
+        travelType = travType;
+        paymentType = payType;
+        medCondInfo = mc;
     }
 
     /** getter methods **/
@@ -61,18 +69,18 @@ public class TravProf extends MedCond{
         tripCost = cost;
     }
     public void updateTravelType(String type){
-        if(type == "Pleasure" || type == "Business") {
+        if(type.equals("Pleasure") || type.equals("Business")) {
             travelType = type;
         }
     }
     public void updatePaymentType(String type){
-        if(type == "Credit" || type == "Check" || type == "Debit" || type == "Invoice"){
+        if(type.equals("Credit") || type.equals("Check") || type.equals("Debit") || type.equals("Invoice")){
             paymentType = type;
         }
 
     }
     public void updateMedCondInfo(MedCond info){
-        MedCond conditions = new MedCond();
+        medCondInfo = info;
 
     }
 }
