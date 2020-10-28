@@ -36,14 +36,14 @@ public class TravProfDB {
     }
 
     public TravProf findProfile(String agent, String last){
-     // returns the traveler profile when given the agent and last name
+        // returns the traveler profile when given the agent and last name
         for(int i = 0; i < travelerList.size(); i++) {
             if(travelerList.get(i).getLastName().equals(last) && travelerList.get(i).getTravAgentID().equals(agent)) {
                 return travelerList.get(i);
             }
         }
         return null;
-     }
+    }
 
     public TravProf findFirstProfile() {
         return travelerList.get(0);
@@ -57,13 +57,13 @@ public class TravProfDB {
     /** I HAVE A DISAGREEMENT WITH THE NEXT TWO METHODS AND THE PROJECT SHEET **/
     public void writeAllTravlProf(String file){
         // writes all the TravProf stored in the travelerList array to a file
-       // try {
-       //     File myObj = new File(file);
-       //     myObj.createNewFile();
-       // } catch (IOException e) {
-       //     System.out.println("An error occurred.");
-       //     e.printStackTrace();
-       // }
+        // try {
+        //     File myObj = new File(file);
+        //     myObj.createNewFile();
+        // } catch (IOException e) {
+        //     System.out.println("An error occurred.");
+        //     e.printStackTrace();
+        // }
         try {
             FileOutputStream Output = new FileOutputStream(file);
             ObjectOutputStream objectPrint = new ObjectOutputStream(Output);
