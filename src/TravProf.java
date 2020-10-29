@@ -1,4 +1,6 @@
-public class TravProf {
+import java.io.Serializable;
+
+public class TravProf implements Serializable {
     /** variables **/
     private String travAgentID;
     private String firstName;
@@ -9,6 +11,12 @@ public class TravProf {
     private String travelType;
     private String paymentType;
     private MedCond medCondInfo;
+
+    /** constructor **/
+    public TravProf(String lname, String agentID){
+        travAgentID = agentID;
+        lastName = lname;
+    }
 
     /** constructor **/
     public TravProf(String agentID, String fName, String lName, String addy, String fone, float tCost, String travType, String payType, MedCond mc) {
@@ -43,10 +51,19 @@ public class TravProf {
         return tripCost;
     }
     public String getTravelType(){
-        return travelType;
+        if(travelType.equals("1")){
+            return "Business";
+        }else{
+            return "Pleasure";
+        }
     }
     public String getPaymentType(){
-        return paymentType;
+        return switch (paymentType) {
+            case "1" -> "Credit";
+            case "2" -> "Check";
+            case "3" -> "Debit";
+            default -> "Invoice";
+        };
     }
     public MedCond getMedCondInfo(){
         return medCondInfo;
