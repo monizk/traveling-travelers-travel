@@ -5,14 +5,14 @@ import java.util.ArrayList;
 
 public class TravProfDB {
     /** initialize variables **/
-    int numTravelers = 0;
-    private int currentTravelerIndex = 0;
-    private String fileName;
-    ArrayList<TravProf> travelerList =  new ArrayList<TravProf>();
+    static int numTravelers = 0;
+    static private int currentTravelerIndex = 0;
+    static private String fileName;
+    static ArrayList<TravProf> travelerList =  new ArrayList<TravProf>();
 
     /** constructor **/
     public TravProfDB(){
-        fileName = "in/Database.txt";
+        fileName = "out/Database.txt";
     }
 
     /** create traveler profile **/
@@ -67,7 +67,7 @@ public class TravProfDB {
 
     /** write the profiles to the database/file **/
     public void writeAllTravProf(){
-        String file = "in/Database.txt";
+        String file = "out/Database.txt";
         try{
             FileOutputStream fileOut = new FileOutputStream(file);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
@@ -76,7 +76,6 @@ public class TravProfDB {
             for(int i = 0; i < travelerList.size(); i++){
                 objectOut.writeObject(travelerList.get(i));
             }
-            objectOut.close();
         } catch(Exception e){
             System.out.println("An error occurred while writing to file");
             e.printStackTrace();
@@ -86,24 +85,23 @@ public class TravProfDB {
 
     /** read profiles to database/file **/
     public void initializeDatabase(){
-        String file = "in/Database.txt";
+        String file = "out/Database.txt";
         try {
-            FileInputStream fileIn = new FileInputStream("in/Database.txt");
+            FileInputStream fileIn = new FileInputStream("out/Database.txt");
             boolean cont = true;
-
-            while (cont) {
                 try (ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
-                    TravProf prof = (TravProf) objectIn.readObject();
-                    if (prof != null) {
-                        TravProfInterface.displayInformation(prof);
-                    }else{
-                        cont = false;
+                    while (cont) {
+                        TravProf prof = (TravProf) objectIn.readObject();
+                        if (prof != null) {
+                            TravProfInterface.displayInformation(prof);
+                        } else {
+                            cont = false;
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.out.println("Error occurred trying to display information (read from database)");
                 }
-            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

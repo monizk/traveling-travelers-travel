@@ -210,6 +210,7 @@ public class TravProfInterface{
                 case "2" -> {
                     System.out.println("Last Name: ");
                     String lname = scan.nextLine();
+                    // maybe add a universal db object and just pass it as a parameter to each of these helper method things
                     edit(lname, id);
                 }
                 /* delete profile */

@@ -91,8 +91,11 @@ public class TravProf implements Serializable {
         }
     }
     public void updatePaymentType(String type){
-        if(type.equals("Credit") || type.equals("Check") || type.equals("Debit") || type.equals("Invoice")){
-            paymentType = type;
+        switch (type) {
+            case "1" -> paymentType = "Credit";
+            case "2" -> paymentType = "Check";
+            case "3" -> paymentType = "Debit";
+            default -> paymentType = "Invoice";
         }
     }
     public void updateMedCondInfo(MedCond info){
