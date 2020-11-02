@@ -1,13 +1,20 @@
 import java.util.Scanner;
 
-// NOTE FOR TOMORROW:
-// modify some of these methods so that rather than having a bunch of sout statements
-// they return the desired information and then I have the sout statements in the main
-// method bc I feel like that's where they belong/are most at home
+// TESTING NOTES:
+// create works
+// edit works
+// search works
+// delete works
+
+// OVERARCHING ISSUE:
+// these things are isolated to individual runs of the program--I DON'T KNOW IF THAT'S HOW IT SHOULD BE OR NOT
+// I feel like if I make an account and save it to the database, it should stay there even if I stop & restart
+// the program--but I don't know!!
 
 public class TravProfInterface{
     /** display all information about a given travel profile **/
     public static void displayInformation(TravProf prof){
+        System.out.println("==================================================================================");
         System.out.println("First Name: " + prof.getFirstName());
         System.out.println("Last Name: " + prof.getLastName());
         System.out.println("Address: " + prof.getAddress());
@@ -20,11 +27,11 @@ public class TravProfInterface{
         System.out.println("Doctor Phone: " + prof.getMedCondInfo().getMdPhone());
         System.out.println("Allergies: " + prof.getMedCondInfo().getAlgType());
         System.out.println("Illness: " + prof.getMedCondInfo().getIllType());
+        System.out.println("==================================================================================");
     }
 
     /** display all profiles **/
-    public static void displayProfiles(){
-        TravProfDB db = new TravProfDB();
+    public static void displayProfiles(TravProfDB db){
         db.initializeDatabase();
     }
 
@@ -43,7 +50,7 @@ public class TravProfInterface{
     }
 
     /** create profile **/
-    public static void create(String id){
+    public static void create(String id, TravProfDB db){
         Scanner scan = new Scanner(System.in);
 
         System.out.println("==================================================================================");
@@ -91,11 +98,8 @@ public class TravProfInterface{
         TravProf newProf = new TravProf(id, fname, lname, add, phone, Float.parseFloat(cost), travType, payType, mc);
 
         // add the new profile to the database
-        TravProfDB base = new TravProfDB();
-
-        base.insertNewProfile(newProf);
-
-        base.writeAllTravProf();
+        db.insertNewProfile(newProf);
+        db.writeAllTravProf();
 
         displayInformation(newProf);
         System.out.println("==================================================================================");
@@ -104,20 +108,31 @@ public class TravProfInterface{
     }
 
     /** edit profile **/
-    public static void edit(String lname, String id){
+    public static void edit(String lname, String id, TravProfDB db){
+        // get & display relevant information
         Scanner scan = new Scanner(System.in);
-        TravProfDB db = new TravProfDB();
-        TravProf prof = db.findProfile(lname, id);
-        displayInformation(prof);
-        System.out.println("Select the number that corresponds to the information you'd like to change: ");
-        options();
-
+        TravProf prof = db.findProfile(id, lname);
         String ill = prof.getMedCondInfo().getIllType();
         String alg = prof.getMedCondInfo().getAlgType();
         String phone = prof.getMedCondInfo().getMdPhone();
         String doc = prof.getMedCondInfo().getMdContact();
+        displayInformation(prof);
 
-        String choice = scan.next();
+        System.out.println("Select the number that corresponds to the information you'd like to change: ");
+        System.out.println("==================================================================================");
+        System.out.println("1. Address");
+        System.out.println("2. Phone Number");
+        System.out.println("3. Travel Type");
+        System.out.println("4. Trip Cost");
+        System.out.println("5. Payment Type");
+        System.out.println("6. Doctor Name");
+        System.out.println("7. Doctor Phone Number");
+        System.out.println("8. Illness");
+        System.out.println("9. Allergies");
+        System.out.println("==================================================================================");
+        // repeat this like 9 times or something stupid like that
+        String choice = scan.nextLine();
+
         switch (Integer.parseInt(choice)) {
             case 1 -> {
                 System.out.println("Update address: ");
@@ -175,17 +190,18 @@ public class TravProfInterface{
     }
 
     /** delete profile **/
-    public static void delete(String lname, String id){
-        TravProfDB db = new TravProfDB();
-        db.deleteProfile(lname, id);
+    public static void delete(String lname, String id, TravProfDB db){
         System.out.println("==================================================================================");
-        System.out.println("Profile Successfully Deleted");
+        if(db.deleteProfile(id, lname)){
+            System.out.println("Profile Successfully Deleted");
+        }else {
+            System.out.println("Profile Not Deleted: Either Does Not Exist OR Is Under A Different Travel Agent");
+        }
         System.out.println("==================================================================================");
     }
 
     /** search for a profile **/
-    public static void search(String lname, String id){
-        TravProfDB db = new TravProfDB();
+    public static void search(String lname, String id, TravProfDB db){
         displayInformation(db.findProfile(id, lname));
     }
 
@@ -194,44 +210,42 @@ public class TravProfInterface{
         System.out.println("==================================================================================");
         System.out.println("* \t\t\t\t\t Welcome to the Integrated Travel System \t\t\t\t\t *");
         System.out.println("==================================================================================");
-        System.out.print("\t Enter your ITS ID: ");
 
-        Scanner scan = new Scanner(System.in);
-        String id = scan.nextLine();
-
-        options();
-        String option = scan.nextLine();
+        TravProfDB db = new TravProfDB();
+        String option = "0";
 
         while(!option.equals("7")) {
+            System.out.print("\t Enter your ITS ID: ");
+            Scanner scan = new Scanner(System.in);
+            String id = scan.nextLine();
+            options();
+            option = scan.nextLine();
             switch (option) {
                 /* create new profile */
-                case "1" -> create(id);
+                case "1" -> create(id, db);
                 /* edit profile */
                 case "2" -> {
                     System.out.println("Last Name: ");
                     String lname = scan.nextLine();
                     // maybe add a universal db object and just pass it as a parameter to each of these helper method things
-                    edit(lname, id);
+                    edit(lname, id, db);
                 }
                 /* delete profile */
                 case "3" -> {
                     System.out.println("Last Name: ");
                     String lName = scan.nextLine();
-                    delete(lName, id);
+                    delete(lName, id, db);
                 }
                 /* search for a profile */
                 case "4" -> {
                     System.out.println("Last Name: ");
                     String lnAme = scan.nextLine();
-                    search(lnAme, id);
+                    search(lnAme, id, db);
                 }
                 /* display all profiles*/
-                case "5" -> displayProfiles();
+                case "5" -> displayProfiles(db);
                 /* save database */
-                case "6" -> {
-                    TravProfDB db = new TravProfDB();
-                    db.initializeDatabase();
-                }
+                case "6" -> db.initializeDatabase();
             }
             options();
             option = scan.nextLine();
