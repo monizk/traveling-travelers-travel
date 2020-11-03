@@ -5,14 +5,14 @@ import java.util.ArrayList;
 
 public class TravProfDB {
     /** initialize variables **/
-    static int numTravelers = 0;
-    static private int currentTravelerIndex = 0;
-    static private String fileName;
-    static ArrayList<TravProf> travelerList =  new ArrayList<TravProf>();
+    int numTravelers = 0;
+    private int currentTravelerIndex = 1;
+    private String fileName;
+    ArrayList<TravProf> travelerList =  new ArrayList<TravProf>();
 
     /** constructor **/
     public TravProfDB(){
-        fileName = "out/Database.txt";
+        fileName = "database.txt";
     }
 
     /** create traveler profile **/
@@ -21,7 +21,6 @@ public class TravProfDB {
         // (add new traveler to list, increase the total num of travelers & increment current traveler to the new one)
         travelerList.add(input);
         System.out.println("ITS BEEN ADDED!!!");
-        currentTravelerIndex++;
         numTravelers = travelerList.size();
         System.out.println("num of profiles: " + numTravelers);
     }
@@ -33,7 +32,6 @@ public class TravProfDB {
             // when found, remove from the list, reduce the index, reduce the size, and return true
             if(travelerList.get(i).getLastName().equals(last) && travelerList.get(i).getTravAgentID().equals(agent)) {
                 travelerList.remove(i);
-                currentTravelerIndex--;
                 numTravelers = travelerList.size();
                 return true;
             }
@@ -62,20 +60,27 @@ public class TravProfDB {
 
     /** return the next profile **/
     public TravProf findNextProfile() {
-        return travelerList.get(currentTravelerIndex + 1);
+        if(currentTravelerIndex == travelerList.size()) {
+            return null;
+        }
+        TravProf answer = travelerList.get(currentTravelerIndex);
+        currentTravelerIndex++;
+        return answer;
     }
 
     /** write the profiles to the database/file **/
     public void writeAllTravProf(){
-        String file = "out/Database.txt";
         try{
-            FileOutputStream fileOut = new FileOutputStream(file);
+            FileOutputStream fileOut = new FileOutputStream(fileName);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 
             // loop through objects & add them to the file
-            for(int i = 0; i < travelerList.size(); i++){
-                objectOut.writeObject(travelerList.get(i));
-            }
+            //for(int i = 0; i < travelerList.size(); i++){
+            //    objectOut.writeObject(travelerList.get(i));
+            //}
+            objectOut.writeObject(travelerList);
+            objectOut.close();
+
         } catch(Exception e){
             System.out.println("An error occurred while writing to file");
             e.printStackTrace();
@@ -85,24 +90,13 @@ public class TravProfDB {
 
     /** read profiles to database/file **/
     public void initializeDatabase(){
-        String file = "out/Database.txt";
         try {
-            FileInputStream fileIn = new FileInputStream("out/Database.txt");
-            boolean cont = true;
-                try (ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
-                    while (cont) {
-                        TravProf prof = (TravProf) objectIn.readObject();
-                        if (prof != null) {
-                            TravProfInterface.displayInformation(prof);
-                        } else {
-                            cont = false;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println("Error occurred trying to display information (read from database)");
-                }
-        } catch (FileNotFoundException e) {
+            FileInputStream fileIn = new FileInputStream(fileName);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+            this.travelerList = (ArrayList<TravProf>)objectIn.readObject();
+
+        } catch (Exception e) {
+            System.out.println("An error occurred while initializing the database");
             e.printStackTrace();
         }
     }
