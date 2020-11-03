@@ -212,6 +212,7 @@ public class TravProfInterface{
         System.out.println("==================================================================================");
 
         TravProfDB db = new TravProfDB();
+        db.initializeDatabase();        //HHEEEEERRRRRRRRRREEEEEEEEE
         String option = "0";
 
         while(!option.equals("7")) {
@@ -245,10 +246,8 @@ public class TravProfInterface{
                 /* display all profiles*/
                 case "5" -> displayProfiles(db);
                 /* save database */
-                case "6" -> db.initializeDatabase();
+                case "6" -> db.writeAllTravProf();          //HEEEEEERRRREEE
             }
-            options();
-            option = scan.nextLine();
         }
     }
 }
