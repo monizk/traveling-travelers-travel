@@ -1,10 +1,6 @@
 import java.util.Scanner;
 
 // TESTING NOTES:
-// create works
-// edit works
-// search works
-// delete works
 
 // OVERARCHING ISSUE:
 // these things are isolated to individual runs of the program--I DON'T KNOW IF THAT'S HOW IT SHOULD BE OR NOT
@@ -12,31 +8,22 @@ import java.util.Scanner;
 // the program--but I don't know!!
 
 public class TravProfInterface{
-    /** display all information about a given travel profile **/
-    public static void displayInformation(TravProf prof){
-        System.out.println("==================================================================================");
-        System.out.println("First Name: " + prof.getFirstName());
-        System.out.println("Last Name: " + prof.getLastName());
-        System.out.println("Address: " + prof.getAddress());
-        System.out.println("Phone: " + prof.getPhone());
-        System.out.println("User ID: " + prof.getTravAgentID());
-        System.out.println("Travel Type: " + prof.getTravelType());
-        System.out.println("Travel Cost: " + prof.getCost());
-        System.out.println("Payment Type: " + prof.getPaymentType());
-        System.out.println("Doctor Name: " + prof.getMedCondInfo().getMdContact());
-        System.out.println("Doctor Phone: " + prof.getMedCondInfo().getMdPhone());
-        System.out.println("Allergies: " + prof.getMedCondInfo().getAlgType());
-        System.out.println("Illness: " + prof.getMedCondInfo().getIllType());
-        System.out.println("==================================================================================");
+    /** variables **/
+    static String userChoice = "0";
+    static String travAgentID;
+    static String lname;
+    static Scanner scan = new Scanner(System.in);
+
+    static TravProfDB db = new TravProfDB();
+    static TravProf prof = db.findProfile(travAgentID, lname);
+
+    /** constructor **/
+    public TravProfInterface(String id){
+        travAgentID = id;
     }
 
-    /** display all profiles **/
-    public static void displayProfiles(TravProfDB db){
-        db.initializeDatabase();
-    }
-
-    /** print out the main menu of options (1-7) **/
-    public static void options(){
+    /** display the options & get the user's choice **/
+    public static void getUserChoice(){
         System.out.println("==================================================================================");
         System.out.println("1. Create New Profile");
         System.out.println("2. Edit Existing Profile");
@@ -47,76 +34,39 @@ public class TravProfInterface{
         System.out.println("7. Exit ITS");
         System.out.println("==================================================================================");
         System.out.print("\t   Please choose the number from above corresponding to your selection: ");
+        userChoice = scan.nextLine();
     }
 
-    /** create profile **/
-    public static void create(String id, TravProfDB db){
-        Scanner scan = new Scanner(System.in);
-
+    /** delete traveler profile **/
+    public static void deleteTravProf(){
         System.out.println("==================================================================================");
-        System.out.println("*   \t To create a profile, you'll need to provide the following information   \t *");
 
-        System.out.print("First Name: ");
-        String fname = scan.nextLine();
+        if(db.deleteProfile(travAgentID, lname)){
+            System.out.println("Profile Successfully Deleted");
+        } else {
+            System.out.println("Profile Not Deleted: Either Does Not Exist OR Is Under A Different Travel Agent");
+        }
 
-        System.out.print("Last Name: ");
-        String lname = scan.nextLine();
-
-        System.out.print("Address: ");
-        String add = scan.nextLine();
-
-        System.out.print("Phone Number: ");
-        String phone = scan.nextLine();
-
-        System.out.print("Trip Cost: ");
-        String cost = scan.nextLine();
-
-        System.out.println("Travel Type:");
-        System.out.println("(1) Business \t (2) Pleasure");
-        String travType = scan.nextLine();
-
-        System.out.println("Payment Type:");
-        System.out.println("(1) Credit \t (2) Check \t (3) Debit \t (4) Invoice");
-        String payType = scan.nextLine();
-
-        System.out.print("Doctor Name: ");
-        String docName = scan.nextLine();
-
-        System.out.print("Doctor Phone Number: ");
-        String docPhone = scan.nextLine();
-
-        System.out.println("Allergies:");
-        System.out.println("(1) None \t (2) Food \t (3) Medication \t (4) Other");
-        String allergies = scan.nextLine();
-
-        System.out.println("Illness:");
-        System.out.println("(1) None \t (2) Heart \t (3) Diabetes \t (4) Asthma \t (5) Other");
-        String illness = scan.nextLine();
-
-        // create the TravProf & MedCond objects
-        MedCond mc = new MedCond(docName, docPhone, allergies, illness);
-        TravProf newProf = new TravProf(id, fname, lname, add, phone, Float.parseFloat(cost), travType, payType, mc);
-
-        // add the new profile to the database
-        db.insertNewProfile(newProf);
-        db.writeAllTravProf();
-
-        displayInformation(newProf);
-        System.out.println("==================================================================================");
-        System.out.println("Profile Successfully Created!");
         System.out.println("==================================================================================");
     }
 
-    /** edit profile **/
-    public static void edit(String lname, String id, TravProfDB db){
+    /** search for a profile **/
+    public static void findTravProf(){
+        if(db.findProfile(travAgentID, lname) != null){
+            displayTravProf(db.findProfile(travAgentID, lname));
+        } else {
+            System.out.println("There are no profiles that match that description.");
+        }
+    }
+
+    /** update an existing profile **/
+    public static void updateTravProf(){
         // get & display relevant information
-        Scanner scan = new Scanner(System.in);
-        TravProf prof = db.findProfile(id, lname);
         String ill = prof.getMedCondInfo().getIllType();
         String alg = prof.getMedCondInfo().getAlgType();
         String phone = prof.getMedCondInfo().getMdPhone();
         String doc = prof.getMedCondInfo().getMdContact();
-        displayInformation(prof);
+        displayTravProf(prof);
 
         System.out.println("Select the number that corresponds to the information you'd like to change: ");
         System.out.println("==================================================================================");
@@ -189,66 +139,173 @@ public class TravProfInterface{
         System.out.println("==================================================================================");
     }
 
-    /** delete profile **/
-    public static void delete(String lname, String id, TravProfDB db){
+    /** display all information about a given travel profile **/
+    public static void displayTravProf(TravProf prof){
         System.out.println("==================================================================================");
-        if(db.deleteProfile(id, lname)){
-            System.out.println("Profile Successfully Deleted");
-        }else {
-            System.out.println("Profile Not Deleted: Either Does Not Exist OR Is Under A Different Travel Agent");
+        System.out.println("First Name: " + prof.getFirstName());
+        System.out.println("Last Name: " + prof.getLastName());
+        System.out.println("Address: " + prof.getAddress());
+        System.out.println("Phone: " + prof.getPhone());
+        System.out.println("User ID: " + prof.getTravAgentID());
+        System.out.println("Travel Type: " + prof.getTravelType());
+        System.out.println("Travel Cost: " + prof.getCost());
+        System.out.println("Payment Type: " + prof.getPaymentType());
+        System.out.println("Doctor Name: " + prof.getMedCondInfo().getMdContact());
+        System.out.println("Doctor Phone: " + prof.getMedCondInfo().getMdPhone());
+        System.out.println("Allergies: " + prof.getMedCondInfo().getAlgType());
+        System.out.println("Illness: " + prof.getMedCondInfo().getIllType());
+        System.out.println("==================================================================================");
+    }
+
+    /** display all profiles in the database **/
+    public static void displayAllTravProf(){
+        boolean valid = true;
+
+        if(db.findFirstProfile() != null){
+            displayTravProf(db.findFirstProfile());
+            while(valid){
+                TravProf prof = db.findNextProfile();
+                if(prof != null && travAgentID == prof.getTravAgentID()){
+                    displayTravProf(prof);
+                } else {
+                    valid = false;
+                }
+            }
+            System.out.println("There are no more profiles to display.");
+            System.out.println("==================================================================================");
+        } else {
+            System.out.println("==================================================================================");
+            System.out.println("There are no profiles to display.");
+            System.out.println("==================================================================================");
         }
-        System.out.println("==================================================================================");
     }
 
-    /** search for a profile **/
-    public static void search(String lname, String id, TravProfDB db){
-        displayInformation(db.findProfile(id, lname));
+    /** write changes to the database **/
+    public static void writeToDB(){
+        db.writeAllTravProf();
     }
 
-    /** main method **/
-    public static void main(String[] args){
+    /** initialize the database **/
+    public static void initDB(){
+        db.initializeDatabase();
+    }
+
+    /** create profile **/
+    public static TravProf createNewTravProf(){
+        System.out.println("*   \t To create a profile, you'll need to provide the following information   \t *");
+
+        System.out.print("First Name: ");
+        String fname = scan.nextLine();
+
+        System.out.print("Last Name: ");
+        String lname = scan.nextLine();
+
+        System.out.print("Address: ");
+        String add = scan.nextLine();
+
+        System.out.print("Phone Number: ");
+        String phone = scan.nextLine();
+
+        System.out.print("Trip Cost: ");
+        String cost = scan.nextLine();
+
+        System.out.println("Travel Type:");
+        System.out.println("(1) Business \t (2) Pleasure");
+        String travType = scan.nextLine();
+
+        System.out.println("Payment Type:");
+        System.out.println("(1) Credit \t (2) Check \t (3) Debit \t (4) Invoice");
+        String payType = scan.nextLine();
+
+        // create the TravProf & MedCond objects
+        MedCond mc = createNewMedCond();
+        TravProf newProf = new TravProf(travAgentID, fname, lname, add, phone, Float.parseFloat(cost), travType, payType, mc);
+
+        // add the new profile to the database
+        db.insertNewProfile(newProf);
+
+        // return the new object
+        return newProf;
+    }
+
+    /** create medCond object **/
+    public static MedCond createNewMedCond(){
+        System.out.print("Doctor Name: ");
+        String docName = scan.nextLine();
+
+        System.out.print("Doctor Phone Number: ");
+        String docPhone = scan.nextLine();
+
+        System.out.println("Allergies:");
+        System.out.println("(1) None \t (2) Food \t (3) Medication \t (4) Other");
+        String allergies = scan.nextLine();
+
+        System.out.println("Illness:");
+        System.out.println("(1) None \t (2) Heart \t (3) Diabetes \t (4) Asthma \t (5) Other");
+        String illness = scan.nextLine();
+        MedCond mc = new MedCond(docName, docPhone, allergies, illness);
+
+        return mc;
+    }
+
+    /** test method **/
+    public static void test(){
+        // initialize the database at the start of ever session
+        // initDB();
+
+        // only welcome them once
         System.out.println("==================================================================================");
         System.out.println("* \t\t\t\t\t Welcome to the Integrated Travel System \t\t\t\t\t *");
         System.out.println("==================================================================================");
 
-        TravProfDB db = new TravProfDB();
-        String option = "0";
-
-        while(!option.equals("7")) {
+        // prompt the user until they quit the program
+        while(!userChoice.equals("7")) {
+            // get their id prior to each selection
             System.out.print("\t Enter your ITS ID: ");
-            Scanner scan = new Scanner(System.in);
-            String id = scan.nextLine();
-            options();
-            option = scan.nextLine();
-            switch (option) {
+            travAgentID = scan.nextLine();
+            getUserChoice();
+
+            switch (userChoice) {
                 /* create new profile */
-                case "1" -> create(id, db);
+                case "1" -> {
+                    System.out.println("==================================================================================");
+                    displayTravProf(createNewTravProf());
+                    System.out.println("Profile Successfully Created!");
+                    System.out.println("==================================================================================");
+                }
                 /* edit profile */
                 case "2" -> {
                     System.out.println("Last Name: ");
-                    String lname = scan.nextLine();
-                    // maybe add a universal db object and just pass it as a parameter to each of these helper method things
-                    edit(lname, id, db);
+                    lname = scan.nextLine();
+                    updateTravProf();
                 }
                 /* delete profile */
                 case "3" -> {
                     System.out.println("Last Name: ");
-                    String lName = scan.nextLine();
-                    delete(lName, id, db);
+                    lname = scan.nextLine();
+                    deleteTravProf();
                 }
                 /* search for a profile */
                 case "4" -> {
                     System.out.println("Last Name: ");
-                    String lnAme = scan.nextLine();
-                    search(lnAme, id, db);
+                    lname = scan.nextLine();
+                    findTravProf();
                 }
                 /* display all profiles*/
-                case "5" -> displayProfiles(db);
+                case "5" -> displayAllTravProf();
                 /* save database */
-                case "6" -> db.initializeDatabase();
+                case "6" -> {
+                    writeToDB();
+                    System.out.println("==================================================================================");
+                    System.out.println("Database Successfully Saved!");
+                    System.out.println("==================================================================================");
+                }
             }
-            options();
-            option = scan.nextLine();
         }
+    }
+
+    /** main method **/
+    public static void main(String[] args){
+        test();
     }
 }

@@ -20,10 +20,7 @@ public class TravProfDB {
         // update variables accordingly
         // (add new traveler to list, increase the total num of travelers & increment current traveler to the new one)
         travelerList.add(input);
-        System.out.println("ITS BEEN ADDED!!!");
-        currentTravelerIndex++;
         numTravelers = travelerList.size();
-        System.out.println("num of profiles: " + numTravelers);
     }
 
     /** delete traveler profile **/
@@ -33,7 +30,6 @@ public class TravProfDB {
             // when found, remove from the list, reduce the index, reduce the size, and return true
             if(travelerList.get(i).getLastName().equals(last) && travelerList.get(i).getTravAgentID().equals(agent)) {
                 travelerList.remove(i);
-                currentTravelerIndex--;
                 numTravelers = travelerList.size();
                 return true;
             }
@@ -57,53 +53,85 @@ public class TravProfDB {
 
     /** return the first profile **/
     public TravProf findFirstProfile() {
-        return travelerList.get(0);
+        if(travelerList.size() == 0){
+            return null;
+        } else {
+            return travelerList.get(0);
+        }
     }
 
     /** return the next profile **/
     public TravProf findNextProfile() {
-        return travelerList.get(currentTravelerIndex + 1);
+        if (currentTravelerIndex == travelerList.size()) {
+            return null;
+        } else {
+            TravProf prof = travelerList.get(currentTravelerIndex);
+            currentTravelerIndex++;
+            return prof;
+        }
+
+        //return travelerList.get(currentTravelerIndex + 1);
     }
 
     /** write the profiles to the database/file **/
     public void writeAllTravProf(){
-        String file = "out/Database.txt";
         try{
-            FileOutputStream fileOut = new FileOutputStream(file);
+            FileOutputStream fileOut = new FileOutputStream(fileName);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 
-            // loop through objects & add them to the file
-            for(int i = 0; i < travelerList.size(); i++){
-                objectOut.writeObject(travelerList.get(i));
-            }
+            objectOut.writeObject(travelerList);
+            objectOut.close();
+
         } catch(Exception e){
             System.out.println("An error occurred while writing to file");
             e.printStackTrace();
         }
+//        String file = "out/Database.txt";
+//        try{
+//            FileOutputStream fileOut = new FileOutputStream(file);
+//            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+//
+//            // loop through objects & add them to the file
+//            for(int i = 0; i < travelerList.size(); i++){
+//                objectOut.writeObject(travelerList.get(i));
+//            }
+//        } catch(Exception e){
+//            System.out.println("An error occurred while writing to file");
+//            e.printStackTrace();
+//        }
 
     }
 
     /** read profiles to database/file **/
     public void initializeDatabase(){
-        String file = "out/Database.txt";
         try {
-            FileInputStream fileIn = new FileInputStream("out/Database.txt");
-            boolean cont = true;
-                try (ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
-                    while (cont) {
-                        TravProf prof = (TravProf) objectIn.readObject();
-                        if (prof != null) {
-                            TravProfInterface.displayInformation(prof);
-                        } else {
-                            cont = false;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println("Error occurred trying to display information (read from database)");
-                }
-        } catch (FileNotFoundException e) {
+            FileInputStream fileIn = new FileInputStream(fileName);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+            this.travelerList = (ArrayList<TravProf>)objectIn.readObject();
+
+        } catch (Exception e) {
+            System.out.println("An error occurred while initializing the database");
             e.printStackTrace();
         }
+//        String file = "out/Database.txt";
+//        try {
+//            FileInputStream fileIn = new FileInputStream("out/Database.txt");
+//            boolean cont = true;
+//                try (ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
+//                    while (cont) {
+//                        TravProf prof = (TravProf) objectIn.readObject();
+//                        if (prof != null) {
+//                            TravProfInterface.displayTravProf(prof);
+//                        } else {
+//                            cont = false;
+//                        }
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    System.out.println("Error occurred trying to display information (read from database)");
+//                }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
     }
 }

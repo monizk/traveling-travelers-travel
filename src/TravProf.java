@@ -13,12 +13,6 @@ public class TravProf implements Serializable {
     private MedCond medCondInfo;
 
     /** constructor **/
-    public TravProf(String lname, String agentID){
-        travAgentID = agentID;
-        lastName = lname;
-    }
-
-    /** constructor **/
     public TravProf(String agentID, String fName, String lName, String addy, String fone, float tCost, String travType, String payType, MedCond mc) {
         travAgentID = agentID;
         firstName = fName;
