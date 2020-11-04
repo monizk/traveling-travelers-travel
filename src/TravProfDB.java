@@ -105,11 +105,13 @@ public class TravProfDB {
 
     /** read profiles to database/file **/
     public void initializeDatabase(){
+        File newFile = new File("out/Database.txt");
         try {
-            FileInputStream fileIn = new FileInputStream(fileName);
-            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-            this.travelerList = (ArrayList<TravProf>)objectIn.readObject();
-
+            if(newFile.length() > 0){
+                FileInputStream fileIn = new FileInputStream(fileName);
+                ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+                this.travelerList = (ArrayList<TravProf>)objectIn.readObject();
+            }
         } catch (Exception e) {
             System.out.println("An error occurred while initializing the database");
             e.printStackTrace();

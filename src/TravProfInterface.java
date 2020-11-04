@@ -8,7 +8,6 @@ public class TravProfInterface{
     static Scanner scan = new Scanner(System.in);
 
     static TravProfDB db = new TravProfDB();
-    static TravProf prof = db.findProfile(travAgentID, lname);
 
     /** constructor **/
     public TravProfInterface(String id){
