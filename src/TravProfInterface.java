@@ -1,13 +1,5 @@
 import java.util.Scanner;
 
-// TESTING NOTES:
-// AHHH
-
-// OVERARCHING ISSUE:
-// these things are isolated to individual runs of the program--I DON'T KNOW IF THAT'S HOW IT SHOULD BE OR NOT
-// I feel like if I make an account and save it to the database, it should stay there even if I stop & restart
-// the program--but I don't know!!
-
 public class TravProfInterface{
     /** variables **/
     static String userChoice = "0";
@@ -45,7 +37,7 @@ public class TravProfInterface{
         if(db.deleteProfile(travAgentID, lname)){
             System.out.println("Profile Successfully Deleted");
         } else {
-            System.out.println("Profile Not Deleted: Either Does Not Exist OR Is Under A Different Travel Agent");
+            System.out.println("Profile Not Deleted: Either Does Not Exist OR Was Created By A Different Travel Agent");
         }
 
         System.out.println("==================================================================================");
@@ -56,18 +48,22 @@ public class TravProfInterface{
         if(db.findProfile(travAgentID, lname) != null){
             displayTravProf(db.findProfile(travAgentID, lname));
         } else {
+            System.out.println("==================================================================================");
             System.out.println("There are no profiles that match that description.");
+            System.out.println("==================================================================================");
         }
     }
 
     /** update an existing profile **/
     public static void updateTravProf(){
         // get & display relevant information
-        String ill = prof.getMedCondInfo().getIllType();
-        String alg = prof.getMedCondInfo().getAlgType();
-        String phone = prof.getMedCondInfo().getMdPhone();
-        String doc = prof.getMedCondInfo().getMdContact();
-        displayTravProf(prof);
+        TravProf prof = db.findProfile(travAgentID, lname);
+        if(prof != null){
+            displayTravProf(prof);
+        }else{
+            System.out.println("There are no profiles that match the provided description.");
+            return;
+        }
 
         System.out.println("Select the number that corresponds to the information you'd like to change: ");
         System.out.println("==================================================================================");
@@ -83,6 +79,11 @@ public class TravProfInterface{
         System.out.println("==================================================================================");
         // repeat this like 9 times or something stupid like that
         String choice = scan.nextLine();
+
+        String ill = prof.getMedCondInfo().getIllType();
+        String alg = prof.getMedCondInfo().getAlgType();
+        String phone = prof.getMedCondInfo().getMdPhone();
+        String doc = prof.getMedCondInfo().getMdContact();
 
         switch (Integer.parseInt(choice)) {
             case 1 -> {
@@ -163,22 +164,27 @@ public class TravProfInterface{
         boolean valid = true;
 
         if(db.findFirstProfile() != null){
-            displayTravProf(db.findFirstProfile());
+            TravProf first = db.findFirstProfile();
+            if(travAgentID.equals(first.getTravAgentID())){
+                displayTravProf(first);
+            }
             while(valid){
                 TravProf prof = db.findNextProfile();
-                if(prof != null && travAgentID == prof.getTravAgentID()){
-                    displayTravProf(prof);
+                if(prof != null){
+                    if(travAgentID.equals(prof.getTravAgentID())){
+                        displayTravProf(prof);
+                    }
                 } else {
                     valid = false;
                 }
             }
-            System.out.println("There are no more profiles to display.");
             System.out.println("==================================================================================");
+            System.out.println("There are no profiles to display.");
         } else {
             System.out.println("==================================================================================");
             System.out.println("There are no profiles to display.");
-            System.out.println("==================================================================================");
         }
+        System.out.println("==================================================================================");
     }
 
     /** write changes to the database **/
@@ -252,7 +258,7 @@ public class TravProfInterface{
     /** test method **/
     public static void test(){
         // initialize the database at the start of ever session
-        // initDB();
+        initDB();
 
         // only welcome them once
         System.out.println("==================================================================================");
@@ -276,19 +282,19 @@ public class TravProfInterface{
                 }
                 /* edit profile */
                 case "2" -> {
-                    System.out.println("Last Name: ");
+                    System.out.print("Last Name: ");
                     lname = scan.nextLine();
                     updateTravProf();
                 }
                 /* delete profile */
                 case "3" -> {
-                    System.out.println("Last Name: ");
+                    System.out.print("Last Name: ");
                     lname = scan.nextLine();
                     deleteTravProf();
                 }
                 /* search for a profile */
                 case "4" -> {
-                    System.out.println("Last Name: ");
+                    System.out.print("Last Name: ");
                     lname = scan.nextLine();
                     findTravProf();
                 }

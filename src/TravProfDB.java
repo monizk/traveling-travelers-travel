@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 public class TravProfDB {
     /** initialize variables **/
-    static int numTravelers = 0;
-    static private int currentTravelerIndex = 0;
-    static private String fileName;
-    static ArrayList<TravProf> travelerList =  new ArrayList<TravProf>();
+    int numTravelers = 0;
+    private int currentTravelerIndex = 0;
+    private String fileName;
+    ArrayList<TravProf> travelerList =  new ArrayList<TravProf>();
 
     /** constructor **/
     public TravProfDB(){
@@ -56,6 +56,7 @@ public class TravProfDB {
         if(travelerList.size() == 0){
             return null;
         } else {
+            currentTravelerIndex = 1;
             return travelerList.get(0);
         }
     }
