@@ -7,7 +7,7 @@ public class TravProfInterface{
     String travAgentID;
     String lname;
     String file;
-    Scanner scan = new Scanner(System.in);
+    Scanner scan;
     TravProfDB db;
 
     /** constructor **/
@@ -17,6 +17,7 @@ public class TravProfInterface{
         db = new TravProfDB(fileName);
         userChoice = "0";
         file = fileName;
+        scan = new Scanner(System.in);
     }
 
     /** display the options & get the user's choice **/
