@@ -109,7 +109,9 @@ public class SwingGUI {
     public static void create(){
         JFrame create = new JFrame();
 
-        JPanel p1, p2;
+        create.setLayout(new GridBagLayout());
+
+        JPanel p1, p2, p3;
         JLabel l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13;
         JTextField travID, first, last, address, phone, tcost, rewards, rID, rbal;
         JComboBox travType, payType, mode;
@@ -122,6 +124,10 @@ public class SwingGUI {
         p2 = new JPanel();
         p2.setLayout(new GridBagLayout());
 
+        p3 = new JPanel();
+        p3.setLayout(new BorderLayout());
+        p3.setBackground(Color.BLACK);
+
         l1 = new JLabel("Create a Traveler Profile", SwingConstants.CENTER);
         l1.setPreferredSize(new Dimension(100, 30));
         l1.setForeground(Color.WHITE);
@@ -133,133 +139,149 @@ public class SwingGUI {
 
         // initialize variables
         GridBagConstraints con = new GridBagConstraints();
+        con.fill = GridBagConstraints.HORIZONTAL;
+
+        // fill p1
+        con.gridx = 0;
+        con.gridy = 0;
+        p1.add(l1, BorderLayout.CENTER);
+        p1.setSize(600, 30);
 
         // initialize labels, fields, & drop downs
         con.gridx = 0;
-        con.gridy = 0;
+        con.gridy = 1;
         l2 = new JLabel("Travel ID:");
         p2.add(l2, con);
 
         con.gridx = 1;
-        con.gridy = 0;
+        con.gridy = 1;
         travID = new JTextField("Enter Travel ID");
         p2.add(travID, con);
 
         con.gridx = 0;
-        con.gridy = 1;
+        con.gridy = 2;
         l3 = new JLabel("First Name:");
         p2.add(l3, con);
 
         con.gridx = 1;
-        con.gridy = 1;
+        con.gridy = 2;
         first = new JTextField("Enter First Name");
         p2.add(first, con);
 
         con.gridx = 0;
-        con.gridy = 2;
+        con.gridy = 3;
         l4 = new JLabel("Last Name:");
         p2.add(l4, con);
 
         con.gridx = 1;
-        con.gridy = 2;
+        con.gridy = 3;
         last = new JTextField("Enter Last Name");
         p2.add(last, con);
 
         con.gridx = 0;
-        con.gridy = 3;
+        con.gridy = 4;
         l5 = new JLabel("Address:");
         p2.add(l5, con);
 
         con.gridx = 1;
-        con.gridy = 3;
+        con.gridy = 4;
         address = new JTextField("Enter Address");
         p2.add(address, con);
 
         con.gridx = 0;
-        con.gridy = 4;
+        con.gridy = 5;
         l6 = new JLabel("Phone Number:");
         p2.add(l6, con);
 
         con.gridx = 1;
-        con.gridy = 4;
+        con.gridy = 5;
         phone = new JTextField("Enter Phone Number");
         p2.add(phone, con);
 
         con.gridx = 0;
-        con.gridy = 5;
+        con.gridy = 6;
         l7 = new JLabel("Trip Cost:");
         p2.add(l7, con);
 
         con.gridx = 1;
-        con.gridy = 5;
+        con.gridy = 6;
         tcost = new JTextField("Enter Trip Cost");
         p2.add(tcost, con);
 
         con.gridx = 0;
-        con.gridy = 6;
+        con.gridy = 7;
         l8 = new JLabel("Travel Type:");
         p2.add(l8, con);
 
         con.gridx = 1;
-        con.gridy = 6;
+        con.gridy = 7;
         travType = new JComboBox(travOptions);
         p2.add(travType, con);
 
         con.gridx = 0;
-        con.gridy = 7;
+        con.gridy = 8;
         l9 = new JLabel("Payment Type:");
         p2.add(l9, con);
 
         con.gridx = 1;
-        con.gridy = 7;
+        con.gridy = 8;
         payType = new JComboBox(payOptions);
         p2.add(payType, con);
 
         con.gridx = 0;
-        con.gridy = 8;
+        con.gridy = 9;
         l10 = new JLabel("Mode of Travel:");
         p2.add(l10, con);
 
         con.gridx = 1;
-        con.gridy = 8;
+        con.gridy = 9;
         mode = new JComboBox(modeOptions);
         p2.add(mode, con);
 
         con.gridx = 0;
-        con.gridy = 9;
+        con.gridy = 10;
         l11 = new JLabel("Rewards Company:");
         p2.add(l11, con);
 
         con.gridx = 1;
-        con.gridy = 9;
+        con.gridy = 10;
         rewards = new JTextField("Enter Rewards Company");
         p2.add(rewards, con);
 
         con.gridx = 0;
-        con.gridy = 10;
+        con.gridy = 11;
         l12 = new JLabel("Rewards ID:");
         p2.add(l12, con);
 
         con.gridx = 1;
-        con.gridy = 10;
+        con.gridy = 11;
         rID = new JTextField("Enter Rewards ID");
         p2.add(rID, con);
 
         con.gridx = 0;
-        con.gridy = 11;
+        con.gridy = 12;
         l13 = new JLabel("Rewards Balance:");
         p2.add(l13, con);
 
         con.gridx = 1;
-        con.gridy = 11;
+        con.gridy = 12;
         rbal = new JTextField("Enter Rewards Balance");
         p2.add(rbal, con);
 
-        // fill p1
-        p1.add(l1, BorderLayout.CENTER);
+        // initialize button
+        submit = new JButton("Submit");
+        submit.setBackground(Color.BLACK);
+        submit.setForeground(Color.WHITE);
+        con.anchor = GridBagConstraints.PAGE_END;
 
-        create.add(p1, BorderLayout.NORTH);
-        create.add(p2, BorderLayout.CENTER);
+        // fill p3
+        p3.add(submit, BorderLayout.CENTER);
+        p3.setSize(600, 30);
+
+        // fill window
+        create.add(p1);
+        create.add(p2);
+        create.add(p3);
 
         // display the window
         create.pack();
