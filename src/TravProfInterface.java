@@ -98,7 +98,7 @@ public class TravProfInterface{
         System.out.println("9. Allergies");
         System.out.println("==================================================================================");
         // get the user's choice
-        String choice = scan.nextLine();
+        String choice = scan.nextLine(); 
 
         // get the necessary variables to create MedCond objects
         String ill = prof.getMedCondInfo().getIllType();

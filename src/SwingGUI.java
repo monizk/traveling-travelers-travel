@@ -4,7 +4,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SwingGUI {
-    public static void mainMenu(){
+    /** variables **/
+    TravProfDB db;
+    String file = "out/Database.txt";
+
+    /** fucking constructor!! **/
+    public SwingGUI() {
+        db = new TravProfDB(file);
+    }
+
+    /** start the gui **/
+    public void useGUI(){
+        // initialize the database & open the main menu
+        db.initializeDatabase(file);
+
+        mainMenu(db);
+    }
+
+    public void mainMenu(TravProfDB db){
         JFrame main = new JFrame();
 
         // create panels
@@ -77,15 +94,15 @@ public class SwingGUI {
 
         select.addActionListener(e -> {
             if (create.isSelected()){
-                create();
+                create(db);
             } else if (delete.isSelected()){
-                delete();
+                delete(db);
             } else if (update.isSelected()){
-                update();
+                update(db);
             } else if (find.isSelected()){
-                find();
+                find(db);
             } else if (display.isSelected()){
-                display();
+                display(db);
             } else {
                 JOptionPane.showMessageDialog(main, "Please select an option.");
             }
@@ -104,7 +121,7 @@ public class SwingGUI {
         main.setVisible(true);
     }
 
-    public static void create(){
+    public void create(TravProfDB db){
         JFrame create = new JFrame();
 
         // create components
@@ -150,6 +167,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 1;
         travID = new JTextField("Enter Travel ID");
+        travID.setBackground(Color.ORANGE);
         p.add(travID, con);
 
         con.gridx = 0;
@@ -161,6 +179,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 2;
         first = new JTextField("Enter First Name");
+        first.setBackground(Color.PINK);
         p.add(first, con);
 
         con.gridx = 0;
@@ -172,6 +191,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 3;
         last = new JTextField("Enter Last Name");
+        last.setBackground(Color.MAGENTA);
         p.add(last, con);
 
         con.gridx = 0;
@@ -183,6 +203,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 4;
         address = new JTextField("Enter Address");
+        address.setBackground(Color.CYAN);
         p.add(address, con);
 
         con.gridx = 0;
@@ -194,6 +215,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 5;
         phone = new JTextField("Enter Phone Number");
+        phone.setBackground(Color.BLUE);
         p.add(phone, con);
 
         con.gridx = 0;
@@ -205,6 +227,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 6;
         tcost = new JTextField("Enter Trip Cost");
+        tcost.setBackground(Color.ORANGE);
         p.add(tcost, con);
 
         con.gridx = 0;
@@ -216,6 +239,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 7;
         travType = new JComboBox(travOptions);
+        travType.setBackground(Color.PINK);
         p.add(travType, con);
 
         con.gridx = 0;
@@ -227,6 +251,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 8;
         payType = new JComboBox(payOptions);
+        payType.setBackground(Color.MAGENTA);
         p.add(payType, con);
 
         con.gridx = 0;
@@ -238,6 +263,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 9;
         mode = new JComboBox(modeOptions);
+        mode.setBackground(Color.CYAN);
         p.add(mode, con);
 
         con.gridx = 0;
@@ -249,6 +275,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 10;
         rewards = new JTextField("Enter Rewards Company");
+        rewards.setBackground(Color.BLUE);
         p.add(rewards, con);
 
         con.gridx = 0;
@@ -260,6 +287,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 11;
         rID = new JTextField("Enter Rewards ID");
+        rID.setBackground(Color.ORANGE);
         p.add(rID, con);
 
         con.gridx = 0;
@@ -271,6 +299,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 12;
         rbal = new JTextField("Enter Rewards Balance");
+        rbal.setBackground(Color.PINK);
         p.add(rbal, con);
 
         // configure button
@@ -304,10 +333,9 @@ public class SwingGUI {
             MedCond mc = new MedCond("temp", "123", "1", "2");
             TravProf newProf = new TravProf(travID.getText(), first.getText(), last.getText(), address.getText(), phone.getText(), Float.parseFloat(tcost.getText()), (String) travType.getSelectedItem(), (String) payType.getSelectedItem(), mc);
 
-            TravProfDB db = new TravProfDB("out/Database.txt");
-            db.initializeDatabase("out/Database.txt");
+            db.initializeDatabase(file);
             db.insertNewProfile(newProf);
-            db.writeAllTravProf("out/Database.txt");
+            db.writeAllTravProf(file);
 
             JOptionPane.showMessageDialog(null, "Profile Successfully Created!");
         });
@@ -321,7 +349,7 @@ public class SwingGUI {
         create.setVisible(true);
     }
 
-    public static void delete(){
+    public void delete(TravProfDB db){
         JFrame delete = new JFrame();
 
         // create components
@@ -361,6 +389,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 1;
         travID = new JTextField("Enter Travel ID");
+        travID.setBackground(Color.ORANGE);
         p.add(travID, con);
 
         con.gridx = 0;
@@ -372,6 +401,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 2;
         last = new JTextField("Enter Last Name");
+        last.setBackground(Color.PINK);
         p.add(last, con);
 
         // configure button
@@ -386,7 +416,6 @@ public class SwingGUI {
 
         // listener
         submit.addActionListener(e -> {
-            TravProfDB db = new TravProfDB("out/Database.txt");
             db.initializeDatabase("out/Database.txt");
             if(db.deleteProfile(travID.getText(), last.getText())){
                 db.writeAllTravProf("out/Database.txt");
@@ -405,7 +434,7 @@ public class SwingGUI {
         delete.setVisible(true);
     }
 
-    public static void update(){
+    public void update(TravProfDB db){
         JFrame update = new JFrame();
 
         // create components
@@ -449,6 +478,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 1;
         travID = new JTextField("Enter Travel ID");
+        travID.setBackground(Color.ORANGE);
         p.add(travID, con);
 
         con.gridx = 0;
@@ -460,6 +490,7 @@ public class SwingGUI {
         con.gridx = 1;
         con.gridy = 2;
         last = new JTextField("Enter Last Name");
+        last.setBackground(Color.PINK);
         p.add(last, con);
 
         con.gridx = 0;
@@ -472,7 +503,7 @@ public class SwingGUI {
         con.gridy = 3;
         attribute = new JComboBox(options);
         // background test
-        attribute.setBackground(Color.RED);
+        attribute.setBackground(Color.MAGENTA);
         p.add(attribute, con);
 
         // configure button
@@ -486,111 +517,220 @@ public class SwingGUI {
         p.add(find, con);
 
         // listener
-        find.addActionListener(e -> {
-            TravProfDB db = new TravProfDB("out/Database.txt");
-            db.initializeDatabase("out/Database.txt");
-            if(db.findProfile(travID.getText(), last.getText()) != null){
-                JFrame update2 = new JFrame();
+        find.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                db.initializeDatabase(file);
+                if (db.findProfile(travID.getText(), last.getText()) == null) {
+                    JOptionPane.showMessageDialog(null, "Profile Does Not Exist!");
+                }else{
+                    JFrame update2 = new JFrame();
 
-                // create components
-                JPanel p1;
-                JLabel l11, l21, l31, l41, l5;
-                JTextField newEntry;
-                JButton submit;
+                    // create components
+                    JPanel p1;
+                    JLabel l11, l21, l31, l41, l5;
+                    JTextField newEntry;
+                    JComboBox newEntryC;
+                    JButton submit;
+                    String updatedAttribute;
 
-                // configure panel
-                p1 = new JPanel();
-                p1.setLayout(new GridBagLayout());
-                p1.setBackground(Color.BLACK);
+                    // configure panel
+                    p1 = new JPanel();
+                    p1.setLayout(new GridBagLayout());
+                    p1.setBackground(Color.BLACK);
 
-                // configure title
-                l11 = new JLabel("Update a Traveler Profile");
-                l11.setForeground(Color.WHITE);
-                l11.setBackground(Color.BLACK);
+                    // configure title
+                    l11 = new JLabel("Update a Traveler Profile");
+                    l11.setForeground(Color.WHITE);
+                    l11.setBackground(Color.BLACK);
 
-                // initialize variables for orientation of components
-                GridBagConstraints con1 = new GridBagConstraints();
-                con1.fill = GridBagConstraints.HORIZONTAL;
-                con1.ipadx = 5;
-                con1.ipady = 5;
+                    // lists of necessary options
+                    String[] travOptions = {"Business", "Pleasure"};
+                    String[] payOptions = {"Credit", "Check", "Debit", "Invoice"};
+                    String[] modeOptions = {"Car", "Train", "Plane"};
 
-                // fill the panel
-                con1.gridx = 0;
-                con1.gridy = 0;
-                p1.add(l11, con1);
-                p1.setSize(600, 30);
+                    // initialize variables for orientation of components
+                    GridBagConstraints con1 = new GridBagConstraints();
+                    con1.fill = GridBagConstraints.HORIZONTAL;
+                    con1.ipadx = 5;
+                    con1.ipady = 5;
 
-                con1.gridx = 0;
-                con1.gridy = 1;
-                l21 = new JLabel("Travel ID:");
-                l21.setForeground(Color.ORANGE);
-                p1.add(l21, con1);
+                    // fill the panel
+                    con1.gridx = 0;
+                    con1.gridy = 0;
+                    p1.add(l11, con1);
+                    p1.setSize(600, 30);
 
-                con1.gridx = 1;
-                con1.gridy = 1;
-                l31 = new JLabel(travID.getText());
-                l31.setForeground(Color.ORANGE);
-                p1.add(l31, con1);
+                    con1.gridx = 0;
+                    con1.gridy = 1;
+                    l21 = new JLabel("Travel ID:");
+                    l21.setForeground(Color.ORANGE);
+                    p1.add(l21, con1);
 
-                con1.gridx = 0;
-                con1.gridy = 2;
-                l31 = new JLabel("Last Name:");
-                l31.setForeground(Color.PINK);
-                p1.add(l31, con1);
+                    con1.gridx = 1;
+                    con1.gridy = 1;
+                    l31 = new JLabel(travID.getText());
+                    l31.setForeground(Color.ORANGE);
+                    p1.add(l31, con1);
 
-                con1.gridx = 1;
-                con1.gridy = 2;
-                l41 = new JLabel(last.getText());
-                l41.setForeground(Color.PINK);
-                p1.add(l41, con1);
+                    con1.gridx = 0;
+                    con1.gridy = 2;
+                    l31 = new JLabel("Last Name:");
+                    l31.setForeground(Color.PINK);
+                    p1.add(l31, con1);
 
-                con1.gridx = 0;
-                con1.gridy = 3;
-                l5 = new JLabel();
-                l5.setForeground(Color.MAGENTA);
-                p1.add(l5, con1);
+                    con1.gridx = 1;
+                    con1.gridy = 2;
+                    l41 = new JLabel(last.getText());
+                    l41.setForeground(Color.PINK);
+                    p1.add(l41, con1);
 
-                con1.gridx = 1;
-                con1.gridy = 3;
-                newEntry = new JTextField("Enter New Attribute");
-                p1.add(newEntry, con1);
+                    con1.gridx = 0;
+                    con1.gridy = 3;
 
-                // configure button
-                submit = new JButton("Submit");
-                submit.setBackground(Color.BLACK);
-                submit.setForeground(Color.WHITE);
-                con1.gridwidth = 2;
-                con1.anchor = GridBagConstraints.PAGE_END;
-                con1.gridx = 0;
-                con1.gridy = 4;
-                p1.add(submit, con1);
+                    // check the input & generate the proper corresponding attribute input text/combo box
+                    if(attribute.getSelectedItem().equals("First Name")){
+                        l5 = new JLabel("First Name");
+                        con1.gridx = 1;
+                        con1.gridy = 3;
+                        newEntry = new JTextField("Enter First Name");
+                        newEntryC = null;
+                        p1.add(newEntry, con1);
+                        updatedAttribute = newEntry.getText();
+                    }else if(attribute.getSelectedItem().equals("Last Name")){
+                        l5 = new JLabel("Last Name");
+                        con1.gridx = 1;
+                        con1.gridy = 3;
+                        newEntry = new JTextField("Enter Last Name");
+                        newEntryC = null;
+                        p1.add(newEntry, con1);
+                        updatedAttribute = newEntry.getText();
+                    }else if(attribute.getSelectedItem().equals("Address")){
+                        l5 = new JLabel("Address");
+                        con1.gridx = 1;
+                        con1.gridy = 3;
+                        newEntry = new JTextField("Enter Address");
+                        newEntryC = null;
+                        p1.add(newEntry, con1);
+                        updatedAttribute = newEntry.getText();
+                    }else if(attribute.getSelectedItem().equals("Phone Number")){
+                        l5 = new JLabel("Phone Number");
+                        con1.gridx = 1;
+                        con1.gridy = 3;
+                        newEntry = new JTextField("Enter Phone Number");
+                        newEntryC = null;
+                        p1.add(newEntry, con1);
+                        updatedAttribute = newEntry.getText();
+                    }else if(attribute.getSelectedItem().equals("Trip Cost")){
+                        l5 = new JLabel("Trip Cost");
+                        con1.gridx = 1;
+                        con1.gridy = 3;
+                        newEntry = new JTextField("Enter Trip Cost");
+                        newEntryC = null;
+                        p1.add(newEntry, con1);
+                        updatedAttribute = newEntry.getText();
+                    } else if (attribute.getSelectedItem().equals("Travel Type")) {
+                        l5 = new JLabel("Travel Type");
+                        con1.gridx = 1;
+                        con1.gridy = 3;
+                        newEntryC = new JComboBox(travOptions);
+                        newEntry = null;
+                        p1.add(newEntryC, con1);
+                        updatedAttribute = newEntryC.getSelectedItem().toString();
+                    }else if(attribute.getSelectedItem().equals("Payment Type")){
+                        l5 = new JLabel("Payment Type");
+                        con1.gridx = 1;
+                        con1.gridy = 3;
+                        newEntryC = new JComboBox(payOptions);
+                        newEntry = null;
+                        p1.add(newEntryC, con1);
+                        updatedAttribute = newEntryC.getSelectedItem().toString();
+                    }else if(attribute.getSelectedItem().equals("Mode of Travel")){
+                        l5 = new JLabel("Mode of Travel");
+                        con1.gridx = 1;
+                        con1.gridy = 3;
+                        newEntryC = new JComboBox(modeOptions);
+                        newEntry = null;
+                        p1.add(newEntryC, con1);
+                        updatedAttribute = newEntryC.getSelectedItem().toString();
+                    }else if(attribute.getSelectedItem().equals("Rewards Company")){
+                        l5 = new JLabel("Rewards Company");
+                        con1.gridx = 1;
+                        con1.gridy = 3;
+                        newEntry = new JTextField("Enter Rewards Company");
+                        newEntryC = null;
+                        p1.add(newEntry, con1);
+                        updatedAttribute = newEntry.getText();
+                    }else if(attribute.getSelectedItem().equals("Rewards ID")){
+                        l5 = new JLabel("Rewards ID");
+                        con1.gridx = 1;
+                        con1.gridy = 3;
+                        newEntry = new JTextField("Enter Rewards ID");
+                        newEntryC = null;
+                        p1.add(newEntry, con1);
+                        updatedAttribute = newEntry.getText();
+                    }else{
+                        l5 = new JLabel("Rewards Balance");
+                        con1.gridx = 1;
+                        con1.gridy = 3;
+                        newEntry = new JTextField("Enter Rewards Balance");
+                        newEntryC = null;
+                        p1.add(newEntry, con1);
+                        updatedAttribute = newEntry.getText();
+                    }
+                    l5.setForeground(Color.MAGENTA);
+                    p1.add(l5, con1);
 
-                // listener
-//                   submit.actionListener(new ActionListener(){
-//                      public void actionPerformed(ActionEvent e){
-//                          TravProfDB db = new TravProfDB("out/Database.txt");
-//                          db.initializeDatabase("out/Database.txt");
-//                          TravProf prof = db.findProfile(travID.getText(), last.getText());
-//
-//                          // add a switch statement here to kinda go through
-//                          // all the possible options/attributes to change/update
-//                          // and in each one be sure to call the TravProf.setter methods to
-//                          // update them accordingly
-//                          // switch
-//
-//                          // also figure out the proper way to "next" listeners
-//                          // because right now it definitely throws an error
-//
-//                      }
-//                   });
+                    // configure button
+                    submit = new JButton("Submit");
+                    submit.setBackground(Color.BLACK);
+                    submit.setForeground(Color.WHITE);
+                    con1.gridwidth = 2;
+                    con1.anchor = GridBagConstraints.PAGE_END;
+                    con1.gridx = 0;
+                    con1.gridy = 4;
+                    p1.add(submit, con1);
 
-                // display & fill the window
-                update2.add(p1);
-                update2.pack();
-                update2.setBackground(Color.BLACK);
-                update2.setTitle("Update Profile");
-                update2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                update2.setVisible(true);
+                    //listener
+                    submit.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            TravProf prof = db.findProfile(travID.getText(), last.getText());
+
+                            if(l5.getText().equals("First Name")){
+                                prof.updateFirstName(newEntry.getText());
+                            }else if(l5.getText().equals("Last Name")){
+                                prof.updateLastName(newEntry.getText());
+                            }else if(l5.getText().equals("Address")){
+                                prof.updateAddress(newEntry.getText());
+                            }else if(l5.getText().equals("Phone Number")){
+                                prof.updatePhone(newEntry.getText());
+                            }else if(l5.getText().equals("Trip Cost")){
+                                prof.updateTripCost(Float.parseFloat(newEntry.getText()));
+                            }else if(l5.getText().equals("Travel Type")){
+                                prof.updateTravelType(newEntryC.getSelectedItem().toString());
+                            }else if(l5.getText().equals("Payment Type")){
+                                prof.updatePaymentType(newEntryC.getSelectedItem().toString());
+                            }else if(l5.getText().equals("Mode of Travel")){
+                                // idk what to do with this yet bc we don't have functionality written for this
+                            }else if(l5.getText().equals("Rewards Company")){
+                                // idk what to do with this yet bc we don't have functionality written for this
+                            }else if(l5.getText().equals("Rewards ID")){
+                                // idk what to do with this yet bc we don't have functionality written for this
+                            }else{
+                                // idk what to do with this yet bc we don't have functionality written for this
+                            }
+
+                            db.writeAllTravProf(file);
+                            JOptionPane.showMessageDialog(null, "Profile Successfully Updated!");
+                        }
+                    });
+                    // display & fill the window
+                    update2.add(p1);
+                    update2.pack();
+                    update2.setBackground(Color.BLACK);
+                    update2.setTitle("Update Profile");
+                    update2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    update2.setVisible(true);
+                }
             }
         });
 
@@ -603,19 +743,21 @@ public class SwingGUI {
         update.setVisible(true);
     }
 
-    public static void find(){
+    public void find(TravProfDB db){
         JOptionPane.showMessageDialog(null,"find!");
     }
 
-    public static void display(){
+    public void display(TravProfDB db){
         JOptionPane.showMessageDialog(null,"display!");
     }
 
-    public static void useGUI(){
-        mainMenu();
-    }
-
     public static void main(String[] args){
-        javax.swing.SwingUtilities.invokeLater(SwingGUI::useGUI);
+        // javax.swing.SwingUtilities.invokeLater(SwingGUI::useGUI);
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                SwingGUI gui = new SwingGUI();
+                gui.useGUI();
+            }
+        });
     }
 }
