@@ -32,7 +32,8 @@ public class MedCond implements Serializable{
             case "1" -> "None";
             case "2" -> "Food";
             case "3" -> "Medication";
-            default -> "Other";
+            case "4" -> "Other";
+            default -> algType;
         };
     }
     // gets the type of illness
@@ -42,7 +43,8 @@ public class MedCond implements Serializable{
             case "2" -> "Heart";
             case "3" -> "Diabetes";
             case "4" -> "Asthma";
-            default -> "Other";
+            case "5" -> "Other";
+            default -> illType;
         };
     }
 
@@ -57,13 +59,13 @@ public class MedCond implements Serializable{
     }
     // updates the type of allergy
     public void updateAlgType(String type){
-        if(type.equals("none") || type.equals("food") || type.equals("medication") || type.equals("other")) {
+        if(type.toLowerCase().equals("none") || type.toLowerCase().equals("food") || type.toLowerCase().equals("medication") || type.toLowerCase().equals("other")) {
             algType = type;
         }
     }
     // updates the type of illness
     public void updateIllType(String type){
-        if(type.equals("none") || type.equals("heart") || type.equals("diabetes") || type.equals("asthma") || type.equals("other")){
+        if(type.toLowerCase().equals("none") || type.toLowerCase().equals("heart") || type.toLowerCase().equals("diabetes") || type.toLowerCase().equals("asthma") || type.toLowerCase().equals("other")){
             illType = type;
         }
     }

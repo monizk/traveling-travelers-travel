@@ -54,11 +54,11 @@ public class TravProf implements Serializable {
     }
     // get the type of travel
     public String getTravelType(){
-        if(travelType.equals("1")){
-            return "Business";
-        }else{
-            return "Pleasure";
-        }
+        return switch (travelType) {
+            case "1" -> "Business";
+            case "2" -> "Pleasure";
+            default -> travelType;
+        };
     }
     // get the type of payment
     public String getPaymentType(){
@@ -66,7 +66,8 @@ public class TravProf implements Serializable {
             case "1" -> "Credit";
             case "2" -> "Check";
             case "3" -> "Debit";
-            default -> "Invoice";
+            case "4" -> "Invoice";
+            default -> paymentType;
         };
     }
     // get the medical information--which is a MedCond object
