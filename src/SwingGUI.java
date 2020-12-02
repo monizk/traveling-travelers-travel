@@ -20,11 +20,13 @@ public class SwingGUI {
 
     /** generate text box components & get the input **/
     public JTextField setGridVariablesField (GridBagConstraints c, int col, int row, String text, JPanel p) {
+        // set the variables that correspond to the elements orientation
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = col;
         c.gridy = row;
-
+        // create the new field
         JTextField field = new JTextField(text);
+        // assign the color
         if (row % 5 == 1) {
             field.setBackground(Color.ORANGE);
         } else if (row % 5 == 2) {
@@ -36,19 +38,20 @@ public class SwingGUI {
         } else if (row % 5 == 0) {
             field.setBackground(Color.BLUE);
         }
-
+        // add the field to the panel & return the value
         p.add(field, c);
-
         return field;
     }
 
     /** generate label components **/
     public void setGridVariablesLabel (GridBagConstraints c, int col, int row, String label, JPanel p) {
+        // set the variables that correspond to the elements orientation
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = col;
         c.gridy = row;
-
+        // create the new label
         JLabel l = new JLabel(label);
+        // assign the color
         if (row == 0) {
             l.setForeground(Color.WHITE);
             l.setBackground(Color.BLACK);
@@ -63,16 +66,19 @@ public class SwingGUI {
         } else if (row % 5 == 0) {
             l.setForeground(Color.BLUE);
         }
+        // add the label to the panel
         p.add(l, c);
     }
 
     /** generate combo box components **/
     public JComboBox setGridVariablesCombo (GridBagConstraints c, int col, int row, String[] combo, JPanel p) {
+        // set the variables that correspond to the elements orientation
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = col;
         c.gridy = row;
-
+        // create  the new drop down
         JComboBox box = new JComboBox(combo);
+        // assign the color
         if (row % 5 == 1) {
             box.setBackground(Color.ORANGE);
         } else if (row % 5 == 2) {
@@ -84,12 +90,14 @@ public class SwingGUI {
         } else if (row % 5 == 0) {
             box.setBackground(Color.BLUE);
         }
+        // add the drop down to the panel & return the value
         p.add(box, c);
         return Objects.requireNonNull(box);
     }
 
     /** generate submit buttons & return the button object **/
     public JButton setGridVariableButton (GridBagConstraints c, int col, int row, String label, JButton button, JPanel p) {
+        // configure & return the button
         button.setText(label);
         button.setBackground(Color.BLACK);
         button.setForeground(Color.WHITE);
@@ -98,135 +106,18 @@ public class SwingGUI {
         c.gridwidth = 2;
         c.anchor = GridBagConstraints.PAGE_END;
         p.add(button, c);
-
         return button;
-    }
-
-    /** provides the visual aspect of locating a profile (for viewing or deleting) **/
-    public void findProfile (TravProfDB db, String title, String window) {
-        JFrame prompt = new JFrame();
-        JPanel p = new JPanel();
-        GridBagConstraints c = new GridBagConstraints();
-        JTextField ID, last;
-        JButton button = new JButton();
-
-        // configure panel
-        p.setLayout(new GridBagLayout());
-        p.setBackground(Color.BLACK);
-        p.setSize(600, 30);
-
-        // configure labels
-        setGridVariablesLabel(c, 0, 0, title, p);
-        setGridVariablesLabel(c, 0, 1, "Travel ID: ", p);
-        setGridVariablesLabel(c, 0, 2, "Last Name: ", p);
-
-        // configure text fields
-        ID = setGridVariablesField(c, 1, 1,"Enter Travel ID", p);
-        last = setGridVariablesField(c, 1, 2, "Enter Last Name", p);
-
-        // configure button
-        button = setGridVariableButton(c, 0, 3, "Submit", button, p);
-
-        // put a listener on the button
-        button.addActionListener(e -> {
-            if (title.contains("Delete")) {
-                delete(db, ID.getText(), last.getText());
-            } else if (title.contains("Find")) {
-                find(db, ID.getText(), last.getText());
-            }
-        });
-
-        // configure prompt window
-        pack(prompt, p, window);
-    }
-
-    /** provides the visual aspect of displaying a profile **/
-    public ArrayList<Object> display (TravProf prof, JFrame info, JPanel p) {
-        GridBagConstraints c = new GridBagConstraints();
-        ArrayList<Object> packParam = new ArrayList<>();
-
-        // configure panel
-        p.removeAll();
-        p.setLayout(new GridBagLayout());
-        p.setBackground(Color.BLACK);
-        p.setSize(600, 30);
-
-        // configure left column
-        setGridVariablesLabel(c, 0, 0, "Profile Information", p);
-        setGridVariablesLabel(c, 0, 1, "First Name: ", p);
-        setGridVariablesLabel(c, 0, 2, "Last Name: ", p);
-        setGridVariablesLabel(c, 0, 3, "Address: ", p);
-        setGridVariablesLabel(c, 0, 4, "Phone Number: ", p);
-        setGridVariablesLabel(c, 0, 5, "Trip Cost: ", p);
-        setGridVariablesLabel(c, 0, 6, "Travel Type: ", p);
-        setGridVariablesLabel(c, 0, 7, "Payment Type: ", p);
-        setGridVariablesLabel(c, 0, 8, "Doctor Name: ", p);
-        setGridVariablesLabel(c, 0, 9, "Doctor Phone Number: ", p);
-        setGridVariablesLabel(c, 0, 10, "Allergy Type: ", p);
-        setGridVariablesLabel(c, 0, 11, "Illness Type: ", p);
-
-        // configure right column
-        setGridVariablesLabel(c, 1, 1, prof.getFirstName(), p);
-        setGridVariablesLabel(c, 1, 2, prof.getLastName(), p);
-        setGridVariablesLabel(c, 1, 3, prof.getAddress(), p);
-        setGridVariablesLabel(c, 1, 4, prof.getPhone(), p);
-        setGridVariablesLabel(c, 1, 5, String.valueOf(prof.getCost()), p);
-        setGridVariablesLabel(c, 1, 6, prof.getTravelType(), p);
-        setGridVariablesLabel(c, 1, 7, prof.getPaymentType(), p);
-        setGridVariablesLabel(c, 1, 8, prof.getMedCondInfo().getMdContact(), p);
-        setGridVariablesLabel(c, 1, 9, prof.getMedCondInfo().getMdPhone(), p);
-        setGridVariablesLabel(c, 1, 10, prof.getMedCondInfo().getAlgType(), p);
-        setGridVariablesLabel(c, 1, 11, prof.getMedCondInfo().getIllType(), p);
-
-        // revalidate & repaint
-        p.revalidate();
-        p.repaint();
-
-        // add important components to array list
-        packParam.add(info);
-        packParam.add(p);
-        packParam.add("Profile Information");
-
-        // return important components to pack
-        return packParam;
     }
 
     /** pack frame **/
     public void pack(JFrame f, JPanel p, String t) {
+        // add the panel & configure the frame
         f.add(p);
         f.pack();
         f.setBackground(Color.BLACK);
         f.setTitle(t);
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.setVisible(true);
-    }
-
-    /** provides the functionality of the delete option **/
-    public void delete (TravProfDB db, String ID, String last) {
-        // initialize the database
-        db.initializeDatabase("out/Database.txt");
-        // delete the profile & send a confirmation--otherwise, communicate the problem
-        if(db.deleteProfile(ID, last)){
-            db.writeAllTravProf("out/Database.txt");
-            JOptionPane.showMessageDialog(null, "Profile Successfully Deleted");
-        }else{
-            JOptionPane.showMessageDialog(null, "Profile Could Not Be Deleted");
-        }
-    }
-
-    /** provides the functionality of the find option **/
-    public void find (TravProfDB db, String ID, String last) {
-        JFrame f = new JFrame();
-        JPanel p = new JPanel();
-        TravProf prof = db.findProfile(ID, last);
-
-        // check if the profile exists, if not, communicate that, if so, display the information
-        if(prof == null){
-            JOptionPane.showMessageDialog(null,"This Profile Does Not Exist");
-        }else {
-            ArrayList<Object> info = display(prof, f, p);
-            pack((JFrame) info.get(0), (JPanel) info.get(1), (String) info.get(2));
-        }
     }
 
     /** provides the visual aspect of creating a profile **/
@@ -291,7 +182,7 @@ public class SwingGUI {
         pack(create, p, "Create Profile");
     }
 
-    /** prov ides the functionality of the create option **/
+    /** provides the functionality of the create option **/
     public void create (TravProfDB db, TravProf prof){
         // initialize the database, insert the new profile, write the profile to the database, and display confirmation
         db.initializeDatabase(file);
@@ -472,7 +363,126 @@ public class SwingGUI {
         }
     }
 
-    /** provides part of the visual and functionality for display all **/
+    /** provides the visual aspect of locating a profile (for viewing or deleting) **/
+    public void findProfile (TravProfDB db, String title, String window) {
+        JFrame prompt = new JFrame();
+        JPanel p = new JPanel();
+        GridBagConstraints c = new GridBagConstraints();
+        JTextField ID, last;
+        JButton button = new JButton();
+
+        // configure panel
+        p.setLayout(new GridBagLayout());
+        p.setBackground(Color.BLACK);
+        p.setSize(600, 30);
+
+        // configure labels
+        setGridVariablesLabel(c, 0, 0, title, p);
+        setGridVariablesLabel(c, 0, 1, "Travel ID: ", p);
+        setGridVariablesLabel(c, 0, 2, "Last Name: ", p);
+
+        // configure text fields
+        ID = setGridVariablesField(c, 1, 1,"Enter Travel ID", p);
+        last = setGridVariablesField(c, 1, 2, "Enter Last Name", p);
+
+        // configure button
+        button = setGridVariableButton(c, 0, 3, "Submit", button, p);
+
+        // put a listener on the button
+        button.addActionListener(e -> {
+            if (title.contains("Delete")) {
+                delete(db, ID.getText(), last.getText());
+            } else if (title.contains("Find")) {
+                find(db, ID.getText(), last.getText());
+            }
+        });
+
+        // configure prompt window
+        pack(prompt, p, window);
+    }
+
+    /** provides the functionality of the delete option **/
+    public void delete (TravProfDB db, String ID, String last) {
+        // initialize the database
+        db.initializeDatabase("out/Database.txt");
+        // delete the profile & send a confirmation--otherwise, communicate the problem
+        if(db.deleteProfile(ID, last)){
+            db.writeAllTravProf("out/Database.txt");
+            JOptionPane.showMessageDialog(null, "Profile Successfully Deleted");
+        }else{
+            JOptionPane.showMessageDialog(null, "Profile Could Not Be Deleted");
+        }
+    }
+
+    /** provides the functionality of the find option **/
+    public void find (TravProfDB db, String ID, String last) {
+        JFrame f = new JFrame();
+        JPanel p = new JPanel();
+        TravProf prof = db.findProfile(ID, last);
+
+        // check if the profile exists, if not, communicate that, if so, display the information
+        if(prof == null){
+            JOptionPane.showMessageDialog(null,"This Profile Does Not Exist");
+        }else {
+            ArrayList<Object> info = display(prof, f, p);
+            pack((JFrame) info.get(0), (JPanel) info.get(1), (String) info.get(2));
+        }
+    }
+
+    /** provides the visual aspect of displaying a profile **/
+    public ArrayList<Object> display (TravProf prof, JFrame info, JPanel p) {
+        GridBagConstraints c = new GridBagConstraints();
+        ArrayList<Object> packParam = new ArrayList<>();
+
+        // clear panel
+        p.removeAll();
+
+        // configure panel
+        p.setLayout(new GridBagLayout());
+        p.setBackground(Color.BLACK);
+        p.setSize(600, 30);
+
+        // configure left column
+        setGridVariablesLabel(c, 0, 0, "Profile Information", p);
+        setGridVariablesLabel(c, 0, 1, "First Name: ", p);
+        setGridVariablesLabel(c, 0, 2, "Last Name: ", p);
+        setGridVariablesLabel(c, 0, 3, "Address: ", p);
+        setGridVariablesLabel(c, 0, 4, "Phone Number: ", p);
+        setGridVariablesLabel(c, 0, 5, "Trip Cost: ", p);
+        setGridVariablesLabel(c, 0, 6, "Travel Type: ", p);
+        setGridVariablesLabel(c, 0, 7, "Payment Type: ", p);
+        setGridVariablesLabel(c, 0, 8, "Doctor Name: ", p);
+        setGridVariablesLabel(c, 0, 9, "Doctor Phone Number: ", p);
+        setGridVariablesLabel(c, 0, 10, "Allergy Type: ", p);
+        setGridVariablesLabel(c, 0, 11, "Illness Type: ", p);
+
+        // configure right column
+        setGridVariablesLabel(c, 1, 1, prof.getFirstName(), p);
+        setGridVariablesLabel(c, 1, 2, prof.getLastName(), p);
+        setGridVariablesLabel(c, 1, 3, prof.getAddress(), p);
+        setGridVariablesLabel(c, 1, 4, prof.getPhone(), p);
+        setGridVariablesLabel(c, 1, 5, String.valueOf(prof.getCost()), p);
+        setGridVariablesLabel(c, 1, 6, prof.getTravelType(), p);
+        setGridVariablesLabel(c, 1, 7, prof.getPaymentType(), p);
+        setGridVariablesLabel(c, 1, 8, prof.getMedCondInfo().getMdContact(), p);
+        setGridVariablesLabel(c, 1, 9, prof.getMedCondInfo().getMdPhone(), p);
+        setGridVariablesLabel(c, 1, 10, prof.getMedCondInfo().getAlgType(), p);
+        setGridVariablesLabel(c, 1, 11, prof.getMedCondInfo().getIllType(), p);
+
+        // revalidate & repaint
+        p.revalidate();
+        p.repaint();
+
+        // add important components to array list
+        packParam.add(info);
+        packParam.add(p);
+        packParam.add("Profile Information");
+
+        // return important components to pack
+        return packParam;
+    }
+
+    /** provides the visual & functionality aspects of displaying the first profile **/
     public void displayFirst (TravProfDB db) {
         JFrame prompt = new JFrame();
         JPanel p = new JPanel();
@@ -505,42 +515,41 @@ public class SwingGUI {
             JPanel p1 = new JPanel();
 
             if (prof != null && prof.getTravAgentID().equals(ID.getText())) {
-                // display the first profile IF it matches
+                // display the first profile IF agentID matches
                 info = display(prof, f, p1);
                 next = setGridVariableButton(c, 1, 13, "Next", next, (JPanel) info.get(1));
                 pack((JFrame) info.get(0), (JPanel) info.get(1), (String) info.get(2));
 
-                // put a listener here
-                next.addActionListener(e2 -> {
-                    findRest(db, c, ID.getText(), f, p1);
-                });
+                // listener
+                next.addActionListener(e2 -> displayNext(db, c, ID.getText(), f, p1));
             } else {
                 // otherwise, check the rest
-                findRest(db, c, ID.getText(), f, p1);
+                displayNext(db, c, ID.getText(), f, p1);
             }
         });
         // configure window
         pack(prompt, p, "Display All Profiles");
     }
 
-    public void findRest(TravProfDB db, GridBagConstraints c, String ID, JFrame f, JPanel p) {
+    /** provides the visual & functionality aspects of displaying the next profile(s) **/
+    public void displayNext(TravProfDB db, GridBagConstraints c, String ID, JFrame f, JPanel p) {
         TravProf prof = db.findNextProfile();
 
-        // checks if the current profile exists & has matching travel agent ID
         if (prof != null && prof.getTravAgentID().equals(ID)) {
+            // display profile information & check next profile
             ArrayList<Object> info = display(prof, f, p);
             JButton next = new JButton();
             next = setGridVariableButton(c, 1, 13, "Next", next, p);
             pack(f, p, (String) info.get(2));
 
-            // put a listener on the button
-            next.addActionListener(e -> {
-                findRest(db, c, ID, f, p);
-            });
+            // listener
+            next.addActionListener(e -> displayNext(db, c, ID, f, p));
         } else if (prof == null) {
+            // stop searching--no remaining profiles
             JOptionPane.showMessageDialog(null, "No More Profiles to Display");
         } else {
-            findRest(db, c, ID, f, p);
+            // check next profile
+            displayNext(db, c, ID, f, p);
         }
     }
 
@@ -654,7 +663,6 @@ public class SwingGUI {
 
     /** test/run the gui **/
     public static void main (String[] args) {
-        // javax.swing.SwingUtilities.invokeLater(SwingGUI::useGUI);
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 SwingGUI gui = new SwingGUI();
